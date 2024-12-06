@@ -6,6 +6,11 @@ use App\Filament\Resources\DocumentResource\Pages;
 use App\Filament\Resources\DocumentResource\RelationManagers;
 use App\Models\Document;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MultiSelect;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,15 +28,17 @@ class DocumentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name')
-                    ->required(),
-                // Forms\Components\
+            TextInput::make('title')->required(),
+            Textarea::make('description'),
+            Select::make('category_id')
+                ->relationship('category', 'name')
+                ->required(),
+            FileUpload::make('file.file_path')
+                ->label('Upload File')
+                ->directory('documents')
+                ->required(),
+            MultiSelect::make('tags')
+                ->relationship('tags', 'name'),
             ]);
     }
 
